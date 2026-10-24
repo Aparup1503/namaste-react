@@ -1,0 +1,40 @@
+{
+  "name": "namaste-react",
+  "version": "1.0.0",
+  "description": "This is Namaste React by Aparup Giri",
+  "main": "App.js",
+  "targets": {
+    "main": false
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aparup1503/namaste-react.git"
+  },
+  "keywords": [],
+  "author": "Aparup Giri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Aparup1503/namaste-react/issues"
+  },
+  "homepage": "https://github.com/Aparup1503/namaste-react#readme",
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "dom": "^0.0.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.4",
+    "router": "^2.2.0"
+  },
+  "browserslist": [
+    "last 2 versions"
+  ]
+}

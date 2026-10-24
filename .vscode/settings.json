@@ -1,6 +1,53 @@
 {
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  }
+  // ✅ Prettier + Formatting
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  // 🎨 Syntax Highlight Customizations
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "comment.line.double-slash",
+        "settings": { "foreground": "#5b863c" }
+      }
+    ]
+  },
+  // Enable Emmet expansion on Tab key
+  "emmet.triggerExpansionOnTab": true,
+
+  // Map Emmet to work in different file types:
+  // - JavaScript → treat as JSX (React)
+  // - TypeScript → treat as TSX (React)
+  // - HTML → standard HTML expansion
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact",
+    "html": "html"
+  },
+
+  // 📝 Better Comments Custom Tags
+  "better-comments.tags": [
+    { "tag": "!", "color": "#FF2D00" }, //! Critical / Errors
+    { "tag": "?", "color": "#3498DB" }, //? Questions
+    { "tag": "//", "color": "#98C379" }, //// Neutral notes
+    { "tag": "todo", "color": "#FF8C00" }, // TODOs / Tasks
+    { "tag": "*", "color": "#32CD32" }, //*Highlight → LimeGreen
+    { "tag": "@", "color": "#00CED1" }, //@ References / Mentions
+    { "tag": "#", "color": "#FF69B4" } //# Metadata / Tags
+  ],
+
+  // ⚡ Autocomplete / IntelliSense
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.quickSuggestionsDelay": 10,
+  "editor.parameterHints.enabled": true, // shows function signatures
+  "editor.snippetSuggestions": "inline" // shows snippets in suggestions
+  //"typescript.suggest.autoImports": true, // auto-imports for TS/JS
+  //"javascript.suggest.autoImports": true // auto-imports for JS
 }
