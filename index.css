@@ -80,3 +80,67 @@
   padding: 0 20px;
   cursor: pointer;
 }
+
+.restaurant-menu {
+  max-width: 800px;
+  margin: 32px auto;
+  padding: 0 20px;
+}
+
+.menu-overview {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-eyebrow {
+  margin: 0 0 6px;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.menu-overview h1 {
+  margin: 0 0 10px;
+}
+
+.menu-cuisines {
+  margin: 0 0 6px;
+  color: #555;
+}
+
+.menu-cost {
+  margin: 0;
+  color: #555;
+}
+
+.menu-section {
+  margin-top: 24px;
+}
+
+.menu-section-heading {
+  margin-bottom: 12px;
+}
+
+.menu-section-heading h2 {
+  margin: 0;
+}
+
+.menu-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.menu-item-indicator {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #138a36;
+  border-radius: 2px;
+}

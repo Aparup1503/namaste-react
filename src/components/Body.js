@@ -1,6 +1,7 @@
 import RestaurantCard from './RestaurantCard';
 import { useState, useEffect } from 'react'; // maintain the state of your component
 import Shimmer from './Shimmer';
+import { Link } from 'react-router';
 import { API_URL } from '../utils/constant.js';
 
 // index as key is not recommended because it can lead to performance issues and bugs in certain scenarios. It's better to use a unique identifier for each item, such as an ID from the data itself.
@@ -11,6 +12,8 @@ const Body = () => {
   const [listofrestaurants, setListOfRestaurants] = useState([]);
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // Whenever state variables update, react triggers a reconciliation cycle (re-renders the component)
   console.log('Body Rendered');
@@ -19,23 +22,59 @@ const Body = () => {
   }, []);
 
   const fetchData = async () => {
-    const data = await fetch(
-      'https://www.swiggy.com/dapi/restaurants/list/v5?lat=21.4756677&lng=86.93611949999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING'
-    );
-    const json = await data.json();
-    //optional chaining
-    setListOfRestaurants(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilteredRestaurant(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
+    try {
+      const response = await fetch(API_URL);
+      console.log('Fetching.....');
+      console.log(response);
+      if (!response.ok) {
+        throw new Error(`Restaurant request failed (${response.status}).`);
+      }
+
+      const json = await response.json();
+      console.log(json);
+      const restaurantCard = json?.data?.cards?.find(
+        (card) =>
+          card?.card?.card?.['@type'] ===
+            'type.googleapis.com/swiggy.gandalf.widgets.v2.GridWidget' &&
+          Array.isArray(
+            card?.card?.card?.gridElements?.infoWithStyle?.restaurants
+          )
+      );
+      const restaurants =
+        restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+
+      if (!Array.isArray(restaurants)) {
+        throw new Error(
+          'The restaurant list was missing from the API response.'
+        );
+      }
+
+      setListOfRestaurants(restaurants);
+      setFilteredRestaurant(restaurants);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred while loading restaurants.'
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  //Conditional Rendering
-  return listofrestaurants.length == 0 ? (
-    <Shimmer />
-  ) : (
+  if (isLoading) {
+    return <Shimmer />;
+  }
+
+  if (error) {
+    return <p role="alert">Unable to load restaurants: {error}</p>;
+  }
+
+  if (listofrestaurants.length === 0) {
+    return <p>No restaurants found.</p>;
+  }
+
+  return (
     <div className="body">
       <div className="filters">
         <input
@@ -80,7 +119,12 @@ const Body = () => {
       <div className="restaurant-container">
         {filteredRestaurant.map((restaurant) => (
           //// Render each restaurant card here
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} /> // Adding a unique key prop to each RestaurantCard component for better performance and to avoid warnings in React.
+          <Link
+            key={restaurant.info.id}
+            to={'/restaurants/' + restaurant.info.id}
+          >
+            <RestaurantCard resData={restaurant} />
+          </Link>
         ))}
       </div>
     </div>
