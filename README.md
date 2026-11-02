@@ -60,3 +60,8 @@ Hooks are special functions in React that let you:
 - Access **context** (`useContext`) for global data
 
 They make functional components powerful and eliminate the need for most class components.
+
+//There are two types of Routing in Web Apps
+
+- Client Side Routing
+- Server Side Routing

@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/Aparup1503/namaste-react#readme",
   "devDependencies": {
-    "parcel": "^2.16.4"
+    "parcel": "^2.16.4",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^3.4.19"
   },
   "dependencies": {
     "dom": "^0.0.3",

@@ -1,8 +1,10 @@
-import RestaurantCard from './RestaurantCard';
-import { useState, useEffect } from 'react'; // maintain the state of your component
+import RestaurantCard, { withPromotedLabel } from './RestaurantCard';
+import { useState, useEffect, useContext } from 'react'; // maintain the state of your component
 import Shimmer from './Shimmer';
 import { Link } from 'react-router';
 import { API_URL } from '../utils/constant.js';
+import useOnlineStatus from '../utils/useOnlineStatus.js';
+import UserContext from '../utils/UserContext.js';
 
 // index as key is not recommended because it can lead to performance issues and bugs in certain scenarios. It's better to use a unique identifier for each item, such as an ID from the data itself.
 const Body = () => {
@@ -14,9 +16,15 @@ const Body = () => {
   const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const onlinStatus = useOnlineStatus();
 
+  const { loggedInUser, setUserName } = useContext(UserContext);
+
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
   // Whenever state variables update, react triggers a reconciliation cycle (re-renders the component)
   console.log('Body Rendered');
+
+  //-Fetch restaurant data once when the component is mounted.
   useEffect(() => {
     fetchData();
   }, []);
@@ -48,7 +56,7 @@ const Body = () => {
           'The restaurant list was missing from the API response.'
         );
       }
-
+      console.log('Restaurant:', restaurants);
       setListOfRestaurants(restaurants);
       setFilteredRestaurant(restaurants);
     } catch (error) {
@@ -74,56 +82,79 @@ const Body = () => {
     return <p>No restaurants found.</p>;
   }
 
+  if (onlinStatus === false)
+    return (
+      <h1>Looks like you are offline.Please check your network settings...</h1>
+    );
   return (
-    <div className="body">
-      <div className="filters">
-        <input
-          type="text"
-          placeholder="Search restaurants..."
-          className="search-box"
-          value={searchText}
-          onChange={(event) => {
-            setSearchText(event.target.value); // Update searchText state on every keystroke
-            // React re-renders the component whenever state changes
-          }}
-        />
-        {
-          //Filters the restaurant cards and update the UI
-          //searchText
-        }
-        <button
-          onClick={() => {
-            console.log(searchText);
-            const filteredRestaurant = listofrestaurants.filter((res) =>
-              res.info?.name?.toLowerCase().includes(searchText.toLowerCase())
-            );
-            setFilteredRestaurant(filteredRestaurant);
-          }}
-        >
-          Search
-        </button>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            //// Filter restaurants with rating above 4
-            const filteredList = listofrestaurants.filter(
-              (res) => res.info.avgRating > 4
-            );
-            ////Update state to trigger re-render with filtered results
-            setListOfRestaurants(filteredList);
-          }}
-        >
-          Top Rated Restaurants
-        </button>
+    <div className="body min-h-screen bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
+      <div className="filter flex">
+        <div className="search m-4 p-4">
+          <input
+            type="text"
+            placeholder="Search restaurants..."
+            className="rounded-lg border border-solid border-gray-400 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            value={searchText}
+            //-Keep the search input state synchronized with the user's input.
+            onChange={(event) => {
+              setSearchText(event.target.value); // Update searchText state on every keystroke
+              // React re-renders the component whenever state changes
+            }}
+          />
+          {
+            //Filters the restaurant cards and update the UI
+            //searchText
+          }
+          <button
+            className="m-4 rounded-lg bg-green-100 px-4 py-2 text-gray-900 dark:bg-green-900 dark:text-gray-100"
+            onClick={() => {
+              console.log(searchText);
+              const filteredRestaurant = listofrestaurants.filter((res) =>
+                res.info?.name?.toLowerCase().includes(searchText.toLowerCase())
+              );
+              setFilteredRestaurant(filteredRestaurant);
+            }}
+          >
+            Search
+          </button>
+        </div>
+        <div className="search m-4 p-4 flex items-center">
+          <button
+            className="rounded-lg bg-gray-100 px-4 py-2 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
+            onClick={() => {
+              //- Display only restaurants with an average rating greater than 4.
+              const filteredList = listofrestaurants.filter(
+                (res) => res.info.avgRating > 4
+              );
+              //-Update the displayed restaurant list with the filtered results.
+              setFilteredRestaurant(filteredList);
+            }}
+          >
+            Top Rated Restaurants
+          </button>
+        </div>
+        <div className="search m-4 p-4 flex items-center">
+          <label>User Name:</label>
+          <input
+            type="text"
+            value={loggedInUser}
+            className="border border-black p-2 m-2"
+            onChange={(e) => setUserName(e.target.value)}
+          />
+        </div>
       </div>
-      <div className="restaurant-container">
+      <div className="flex flex-wrap">
         {filteredRestaurant.map((restaurant) => (
-          //// Render each restaurant card here
+          //-Render each restaurant as a navigable card using its unique restaurant ID.
           <Link
             key={restaurant.info.id}
             to={'/restaurants/' + restaurant.info.id}
           >
-            <RestaurantCard resData={restaurant} />
+            {restaurant.info?.veg ? (
+              <RestaurantCardPromoted resData={restaurant} />
+            ) : (
+              <RestaurantCard resData={restaurant} />
+            )}
           </Link>
         ))}
       </div>
