@@ -11,6 +11,24 @@
       {
         "scope": "comment.line.double-slash",
         "settings": { "foreground": "#5b863c" }
+      },
+      {
+        "scope": "entity.name.tag",
+        "settings": {
+          "foreground": "#569CD6"
+        }
+      },
+      {
+        "scope": "entity.other.attribute-name",
+        "settings": {
+          "foreground": "#FFB86C"
+        }
+      },
+      {
+        "scope": "string",
+        "settings": {
+          "foreground": "#98C379"
+        }
       }
     ]
   },
@@ -31,11 +49,19 @@
   "better-comments.tags": [
     { "tag": "!", "color": "#FF2D00" }, //! Critical / Errors
     { "tag": "?", "color": "#3498DB" }, //? Questions
-    { "tag": "//", "color": "#98C379" }, //// Neutral notes
+    { "tag": "//", "color": "#808080" }, //// Neutral Gray
     { "tag": "todo", "color": "#FF8C00" }, // TODOs / Tasks
     { "tag": "*", "color": "#32CD32" }, //*Highlight → LimeGreen
     { "tag": "@", "color": "#00CED1" }, //@ References / Mentions
-    { "tag": "#", "color": "#FF69B4" } //# Metadata / Tags
+    { "tag": "#", "color": "#C678DD" }, //# Soft Purple
+    { "tag": "WARN", "color": "#FFD700" }, //WARN Warning / Attention
+    { "tag": "~", "color": "#A9A9A9" }, //~ Dark Gray
+    { "tag": ":", "color": "#00FFFF" }, //: Notes / Explanation
+    { "tag": "^", "color": "#7FFF00" }, //^ Chartreuse - High Priority / Review
+    { "tag": "$", "color": "#00C853" }, //$ Premium Emerald Green
+    { "tag": "NOTE", "color": "#00FF7F" }, //NOTE Important Explanation
+    { "tag": "IMP", "color": "#00BFFF" }, //IMP DeepSkyBlue
+    { "tag": "-", "color": "#C0C0C0" } //- Silver Gray
   ],
 
   // ⚡ Autocomplete / IntelliSense
@@ -47,7 +73,8 @@
   "editor.suggestOnTriggerCharacters": true,
   "editor.quickSuggestionsDelay": 10,
   "editor.parameterHints.enabled": true, // shows function signatures
-  "editor.snippetSuggestions": "inline" // shows snippets in suggestions
+  "editor.snippetSuggestions": "inline", // shows snippets in suggestions
+  "editor.quickSuggestions.comments": true
   //"typescript.suggest.autoImports": true, // auto-imports for TS/JS
   //"javascript.suggest.autoImports": true // auto-imports for JS
 }
