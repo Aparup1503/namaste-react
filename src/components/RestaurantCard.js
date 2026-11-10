@@ -41,7 +41,9 @@ const RestaurantCard = ({ resData }) => {
 
   const { loggedInUser } = useContext(UserContext);
   return (
-    <div className="m-4 w-[250px] cursor-pointer rounded-lg bg-white p-4 text-gray-900 transition-all duration-200 hover:-translate-y-1 hover:bg-gray-200 hover:shadow-lg dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700">
+    <div
+      className="m-4 w-[250px] cursor-pointer rounded-lg bg-white p-4 text-gray-900 transition-all duration-200 hover:-translate-y-1 hover:bg-gray-200 hover:shadow-lg dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+    >
       <img
         className="rounded-lg"
         src={CDN_URL + cloudinaryImageId}
@@ -72,5 +74,8 @@ export const withPromotedLabel = (RestaurantCard) => {
     );
   };
 };
+
+// Backward-compatible alias used by older tests/examples.
+export const withPromtedLabel = withPromotedLabel;
 
 export default RestaurantCard;

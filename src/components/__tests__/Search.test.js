@@ -1,0 +1,59 @@
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import Body from '../Body';
+import MOCK_DATA from './mocks/mockResListData.json';
+import { BrowserRouter } from 'react-router-dom';
+import '@testing-library/jest-dom';
+
+afterEach(cleanup);
+
+global.fetch = jest.fn(() => {
+  return Promise.resolve({
+    ok: true,
+    status: 200,
+    json: () => Promise.resolve(MOCK_DATA),
+  });
+});
+
+it('Should Search Res List for burger text input', async () => {
+  render(
+    <BrowserRouter>
+      <Body />
+    </BrowserRouter>
+  );
+
+  const cardsBeforeSearch = await screen.findAllByTestId('resCard');
+
+  expect(cardsBeforeSearch.length).toBe(20);
+
+  const searchBtn = screen.getByRole('button', { name: 'Search' });
+
+  const searchInput = screen.getByTestId('searchInput');
+
+  fireEvent.change(searchInput, { target: { value: 'burger' } });
+
+  fireEvent.click(searchBtn);
+
+  const cardsAfterSearch = screen.getAllByTestId('resCard');
+
+  expect(cardsAfterSearch).toHaveLength(4);
+});
+
+it('Should filter Top Rated Restaurant', async () => {
+  render(
+    <BrowserRouter>
+      <Body />
+    </BrowserRouter>
+  );
+
+  const cardsBeforeFilter = await screen.findAllByTestId('resCard');
+
+  expect(cardsBeforeFilter.length).toBe(20);
+
+  const topRatedBtn = screen.getByRole('button', {
+    name: 'Top Rated Restaurants',
+  });
+  fireEvent.click(topRatedBtn);
+
+  const cardsAfterFilter = screen.getAllByTestId('resCard');
+  expect(cardsAfterFilter.length).toBe(13);
+});

@@ -1,7 +1,7 @@
 import RestaurantCard, { withPromotedLabel } from './RestaurantCard';
 import { useState, useEffect, useContext } from 'react'; // maintain the state of your component
 import Shimmer from './Shimmer';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { API_URL } from '../utils/constant.js';
 import useOnlineStatus from '../utils/useOnlineStatus.js';
 import UserContext from '../utils/UserContext.js';
@@ -92,6 +92,7 @@ const Body = () => {
         <div className="search m-4 p-4">
           <input
             type="text"
+            data-testid="searchInput"
             placeholder="Search restaurants..."
             className="rounded-lg border border-solid border-gray-400 bg-white px-3 py-2 text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
             value={searchText}
@@ -149,6 +150,7 @@ const Body = () => {
           <Link
             key={restaurant.info.id}
             to={'/restaurants/' + restaurant.info.id}
+            data-testid="resCard"
           >
             {restaurant.info?.veg ? (
               <RestaurantCardPromoted resData={restaurant} />

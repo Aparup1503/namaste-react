@@ -1,8 +1,9 @@
 import { LOGO_URL } from '../utils/constant.js'; // Importing LOGO_URL from constant.js
 import { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import useOnlineStatus from '../utils/useOnlineStatus.js';
 import UserContext from '../utils/UserContext.js';
+import { useSelector } from 'react-redux';
 
 const Header = ({ isDarkMode, onToggleDarkMode }) => {
   const [btnNameReact, setBtnNameReact] = useState('Login');
@@ -24,6 +25,10 @@ const Header = ({ isDarkMode, onToggleDarkMode }) => {
     console.log('useEffect called');
   }, []);
 
+  // Subscribe to the Redux store and select the cart items from the global state.
+  // The component automatically re-renders when the selected cart items change.
+  const cartitems = useSelector((store) => store.cart.items);
+  console.log('Cart Items:', cartitems);
   return (
     <div className="mb-2 flex justify-between bg-white text-gray-900 shadow-lg dark:bg-gray-900 dark:text-gray-100">
       <div className="logo-container">
@@ -44,6 +49,9 @@ const Header = ({ isDarkMode, onToggleDarkMode }) => {
           </li>
           <li className="px-4">
             <Link to="/grocery">Grocery</Link>
+          </li>
+          <li className="px-4 font-bold text-xl">
+            <Link to="/cart">Cart ({cartitems.length} items)</Link>
           </li>
           <li className="px-4">{data.loggedInUser}</li>
           <li>

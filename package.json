@@ -25,15 +25,27 @@
   },
   "homepage": "https://github.com/Aparup1503/namaste-react#readme",
   "devDependencies": {
+    "@babel/core": "^8.1.0",
+    "@babel/preset-env": "^8.0.7",
+    "@babel/preset-react": "^8.0.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/jest": "^30.0.0",
+    "babel-jest": "^30.5.2",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "parcel": "^2.16.4",
     "postcss": "^8.5.32",
     "tailwindcss": "^3.4.19"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.14.0",
     "dom": "^0.0.3",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-router-dom": "^7.18.4",
+    "react-redux": "^9.3.1",
+    "react-router": "^6.28.0",
+    "react-router-dom": "^6.28.0",
     "router": "^2.2.0"
   },
   "browserslist": [

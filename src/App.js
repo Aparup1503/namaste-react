@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 
 import Header from './components/Header';
 import Body from './components/Body';
@@ -9,6 +9,9 @@ import Error from './components/Error';
 import RestaurantMenu from './components/RestaurantMenu';
 import Shimmer from './components/Shimmer';
 import UserContext from './utils/UserContext';
+import { Provider } from 'react-redux';
+import appStore from './utils/appStore';
+import Cart from './components/Cart';
 
 // ============================================================
 // 🚀 PERFORMANCE: LAZY LOADING & CODE SPLITTING
@@ -68,15 +71,18 @@ const AppLayout = () => {
   }, []);
 
   return (
-    //- Provide authenticated user information and update capabilities
-    //- to all components within the application layout.
-    <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
-      <div className="app min-h-screen bg-white text-gray-900">
-        <Header />
-        {/* Render the component associated with the currently matched route. */}
-        <Outlet />
-      </div>
-    </UserContext.Provider>
+    //- Makes the Redux store available to the entire React component tree.
+    <Provider store={appStore}>
+      {/*Provide authenticated user information and update capabilities  to
+      all components within the application layout. */}
+      <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
+        <div className="app min-h-screen bg-white text-gray-900">
+          <Header />
+          {/* Render the component associated with the currently matched route. */}
+          <Outlet />
+        </div>
+      </UserContext.Provider>
+    </Provider>
   );
 };
 
@@ -138,6 +144,11 @@ const appRouter = createBrowserRouter([
       {
         path: 'restaurants/:resId',
         element: <RestaurantMenu />,
+      },
+      // 🛒 Cart page: statically imported.
+      {
+        path: '/cart',
+        element: <Cart />,
       },
     ],
   },
